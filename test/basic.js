@@ -160,19 +160,19 @@ describe('easy-tree', function() {
 
     describe('prepend method', function() {
         it('prepends nodes to the tree root', function() {
-            tree.prepend([], { z : 26 });
+            tree.prepend([], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'prepend-root');
         });
 
         it('prepends nodes to the tree root with no path', function() {
-            tree.prepend({ z : 26 });
+            tree.prepend({ z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'prepend-root');
         });
 
         it('prepends nodes to an empty subtree', function() {
-            tree.prepend([1, 0, 1], { z : 26 });
+            tree.prepend([1, 0, 1], { z : 26 }).must.equal(1);
             assertTreeMatchesFile(
                 'prepend-empty-subtree');
         });
@@ -186,7 +186,7 @@ describe('easy-tree', function() {
 
     describe('insertBefore method', function() {
         it('inserts nodes as the first child of a subtree', function() {
-            tree.insertBefore([1, 0, 0], { z : 26 });
+            tree.insertBefore([1, 0, 0], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'insert-subtree-begin');
         });
@@ -198,13 +198,13 @@ describe('easy-tree', function() {
         });
 
         it('inserts nodes in the middle of a subtree', function() {
-            tree.insertBefore([0, 2], { z : 26 });
+            tree.insertBefore([0, 2], { z : 26 }).must.equal(4);
             assertTreeMatchesFile(
                 'insert-subtree-middle');
         });
 
         it('inserts nodes as the last child of the root', function() {
-            tree.insertBefore([2], { z : 26 });
+            tree.insertBefore([2], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'insert-root-end');
         });
@@ -230,19 +230,19 @@ describe('easy-tree', function() {
 
     describe('append method', function() {
         it('appends nodes to the tree root', function() {
-            tree.append([], { z : 26 });
+            tree.append([], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'append-root');
         });
 
         it('appends nodes to the tree root with no path', function() {
-            tree.append({ z : 26 });
+            tree.append({ z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'append-root');
         });
 
         it('appends nodes to a non-empty subtree', function() {
-            tree.append([1, 0], { z : 26 });
+            tree.append([1, 0], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'append-non-empty');
         });
@@ -256,7 +256,7 @@ describe('easy-tree', function() {
 
     describe('insertAfter method', function() {
         it('inserts nodes as the first child of a subtree', function() {
-            tree.insertAfter([1, 0, -1], { z : 26 });
+            tree.insertAfter([1, 0, -1], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'insert-subtree-begin');
         });
@@ -268,13 +268,13 @@ describe('easy-tree', function() {
         });
 
         it('inserts nodes in the middle of a subtree', function() {
-            tree.insertAfter([0, 1], { z : 26 });
+            tree.insertAfter([0, 1], { z : 26 }).must.equal(4);
             assertTreeMatchesFile(
                 'insert-subtree-middle');
         });
 
         it('inserts nodes as the last child of the root', function() {
-            tree.insertAfter([1], { z : 26 });
+            tree.insertAfter([1], { z : 26 }).must.equal(3);
             assertTreeMatchesFile(
                 'insert-root-end');
         });
@@ -300,19 +300,25 @@ describe('easy-tree', function() {
 
     describe('remove method', function() {
         it('removes nodes at the beginning of a tree', function() {
-            tree.remove([0]);
+            var node = tree.children[0];
+            tree.remove([0]).must.equal(node);
+            node.children.must.have.length(0);
             assertTreeMatchesFile(
                 'remove-0');
         });
 
         it('removes nodes in the middle of a subtree', function() {
-            tree.remove([1, 1]);
+            var node = tree.get([1, 1]);
+            tree.remove([1, 1]).must.equal(node);
+            node.children.must.have.length(0);
             assertTreeMatchesFile(
                 'remove-1-1');
         });
 
         it('removes nodes at the end of a subtree', function() {
-            tree.remove([1, 2, 2]);
+            var node = tree.get([1, 2, 2]);
+            tree.remove([1, 2, 2]).must.equal(node);
+            node.children.must.have.length(0);
             assertTreeMatchesFile(
                 'remove-1-2-2');
         });
@@ -338,19 +344,22 @@ describe('easy-tree', function() {
 
     describe('prune method', function() {
         it('prunes nodes at the beginning of a tree', function() {
-            tree.prune([0]);
+            var node = tree.children[0];
+            tree.prune([0]).must.equal(node);
             assertTreeMatchesFile(
                 'prune-0');
         });
 
         it('prunes nodes in the middle of a subtree', function() {
-            tree.prune([1, 1]);
+            var node = tree.get([1, 1]);
+            tree.prune([1, 1]).must.equal(node);
             assertTreeMatchesFile(
                 'prune-1-1');
         });
 
         it('prunes nodes at the end of a subtree', function() {
-            tree.prune([1, 2, 2]);
+            var node = tree.get([1, 2, 2]);
+            tree.prune([1, 2, 2]).must.equal(node);
             assertTreeMatchesFile(
                 'prune-1-2-2');
         });
