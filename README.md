@@ -47,10 +47,9 @@ They can have any data attributes that do not conflict with `Tree` object
 method names, and one or more children, which are stored in the `children`
 array.
 
-Use `tree.children[i]` and `tree.children.length` to retrieve and
-count children, but **do not manipulate the `children` array directly!**
-Instead, use the following methods to safely and correctly perform operations
-on the tree:
+You can use `tree.children[i]` and `tree.children.length` to retrieve and count
+children, but **do not manipulate the `children` array directly!** Instead, use
+the following methods to safely and correctly perform operations on the tree:
 
 ## Methods
 
