@@ -303,4 +303,36 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [ 0, 3, 0 ]: 3 (index 1) is above maximum value of 2.');
         });
     });
+
+    describe('prune', function() {
+        it('prunes nodes at the beginning of a tree', function() {
+            tree.prune([0]);
+            assertTreeMatchesFile(
+                'prune-0');
+        });
+
+        it('prunes nodes in the middle of a subtree', function() {
+            tree.prune([1, 1]);
+            assertTreeMatchesFile(
+                'prune-1-1');
+        });
+
+        it('prunes nodes at the end of a subtree', function() {
+            tree.prune([1, 2, 2]);
+            assertTreeMatchesFile(
+                'prune-1-2-2');
+        });
+
+        it('cannot prune the root node', function() {
+            (function() {
+                tree.prune([]);
+            }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
+        });
+
+        it('cannot prune a non-existent subtree', function() {
+            (function() {
+                tree.prune([0, 3, 0]);
+            }).must.throw('Bad tree path [ 0, 3, 0 ]: 3 (index 1) is above maximum value of 2.');
+        });
+    });
 });
