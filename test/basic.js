@@ -227,7 +227,7 @@ describe('easy-tree', function() {
                 'append-non-empty');
         });
 
-        it('cannot append ndoes to a non-existent subtree', function() {
+        it('cannot append nodes to a non-existent subtree', function() {
             (function() {
                 tree.append([0, -1], { z : 26 });
             }).must.throw('Bad tree path [ 0, -1 ]: -1 (index 1) is below minimum value of 0.');
