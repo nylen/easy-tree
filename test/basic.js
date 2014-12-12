@@ -108,6 +108,14 @@ describe('easy-tree', function() {
             tree.get([]).must.equal(tree);
         });
 
+        it('gets the root node with no path', function() {
+            tree.get().must.equal(tree);
+        });
+
+        it('gets the root node with a null path', function() {
+            tree.get(null).must.equal(tree);
+        });
+
         it('gets a subtree', function() {
             tree.get([1, 2]).must.equal(
                 tree.children[1].children[2]);
@@ -117,12 +125,6 @@ describe('easy-tree', function() {
             (function() {
                 tree.get([0, 3]);
             }).must.throw('Bad tree path [ 0, 3 ]: 3 (index 1) is above maximum value of 2.');
-        });
-
-        it('cannot get a missing path', function() {
-            (function() {
-                tree.get();
-            }).must.throw('Tree paths must be arrays.');
         });
 
         it('cannot get a numeric path', function() {
@@ -159,6 +161,12 @@ describe('easy-tree', function() {
     describe('prepend method', function() {
         it('prepends nodes to the tree root', function() {
             tree.prepend([], { z : 26 });
+            assertTreeMatchesFile(
+                'prepend-root');
+        });
+
+        it('prepends nodes to the tree root with no path', function() {
+            tree.prepend({ z : 26 });
             assertTreeMatchesFile(
                 'prepend-root');
         });
@@ -212,11 +220,23 @@ describe('easy-tree', function() {
                 tree.insertBefore([], { z : 26 });
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
+
+        it('cannot insert nodes before the tree root with no path', function() {
+            (function() {
+                tree.insertBefore({ z : 26 });
+            }).must.throw('Tree path is required for this operation.');
+        });
     });
 
     describe('append method', function() {
         it('appends nodes to the tree root', function() {
             tree.append([], { z : 26 });
+            assertTreeMatchesFile(
+                'append-root');
+        });
+
+        it('appends nodes to the tree root with no path', function() {
+            tree.append({ z : 26 });
             assertTreeMatchesFile(
                 'append-root');
         });
@@ -270,6 +290,12 @@ describe('easy-tree', function() {
                 tree.insertAfter([], { z : 26 });
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
+
+        it('cannot insert nodes before the tree root with no path', function() {
+            (function() {
+                tree.insertAfter({ z : 26 });
+            }).must.throw('Tree path is required for this operation.');
+        });
     });
 
     describe('remove method', function() {
@@ -295,6 +321,12 @@ describe('easy-tree', function() {
             (function() {
                 tree.remove([]);
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
+        });
+
+        it('cannot remove the root node with no path', function() {
+            (function() {
+                tree.remove();
+            }).must.throw('Tree path is required for this operation.');
         });
 
         it('cannot remove a non-existent subtree', function() {
@@ -329,6 +361,12 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
 
+        it('cannot prune the root node with no path', function() {
+            (function() {
+                tree.prune();
+            }).must.throw('Tree path is required for this operation.');
+        });
+
         it('cannot prune a non-existent subtree', function() {
             (function() {
                 tree.prune([0, 3, 0]);
@@ -337,16 +375,57 @@ describe('easy-tree', function() {
     });
 
     describe('walk method', function() {
-        // walk() is already pretty heavily tested (see describeTree() above)
+        // walk() itself is already pretty well-tested (see describeTree()
+        // above) so just test the item count and the permutations of arguments
+        // here.
 
         it('returns the count of all nodes', function() {
+            tree.walk([]).must.equal(16);
+        });
+
+        it('returns the count of all nodes with no path', function() {
             tree.walk().must.equal(16);
+        });
+
+        it('returns the count of all nodes given only a function', function() {
+            var n = 0;
+            tree.walk(function() {
+                n++;
+            }).must.equal(16);
+            n.must.equal(16);
+        });
+
+        it('walks subtrees', function() {
+            var n     = 0,
+                paths = [];
+            tree.walk([1], function(path, node) {
+                n++;
+                paths.push(path.join(','));
+            }).must.equal(11);
+            n.must.equal(11);
+            paths.must.eql([
+                '1',
+                '1,0',
+                '1,0,0',
+                '1,0,1',
+                '1,1',
+                '1,1,0',
+                '1,1,1',
+                '1,2',
+                '1,2,0',
+                '1,2,1',
+                '1,2,2'
+            ]);
         });
     });
 
     describe('keys method', function() {
         it('works on the root node', function() {
             tree.keys([]).must.eql(['a', 'b']);
+        });
+
+        it('works on the root node with no path', function() {
+            tree.keys().must.eql(['a', 'b']);
         });
 
         it('works on a non-empty descendant node', function() {
@@ -356,12 +435,6 @@ describe('easy-tree', function() {
         it('works on an empty child node', function() {
             tree.append([], {});
             tree.keys([2]).must.eql([]);
-        });
-
-        it('fails if no path given', function() {
-            (function() {
-                tree.keys();
-            }).must.throw('Tree paths must be arrays.');
         });
     });
 });

@@ -33,6 +33,11 @@ Tree.prototype.get = function(path) {
 };
 
 Tree.prototype.prepend = function(path, child) {
+    if (typeof child == 'undefined') {
+        child = path;
+        path  = null;
+    }
+
     var self = this;
 
     return self._doAtPath(path, 0, 0, 0, function(node) {
@@ -42,6 +47,11 @@ Tree.prototype.prepend = function(path, child) {
 };
 
 Tree.prototype.insertBefore = function(path, child) {
+    if (typeof child == 'undefined') {
+        child = path;
+        path  = null;
+    }
+
     var self = this;
 
     return self._doAtPath(path, 1, 0, 1, function(node, i) {
@@ -51,6 +61,11 @@ Tree.prototype.insertBefore = function(path, child) {
 };
 
 Tree.prototype.append = function(path, child) {
+    if (typeof child == 'undefined') {
+        child = path;
+        path  = null;
+    }
+
     var self = this;
 
     return self._doAtPath(path, 0, 0, 0, function(node) {
@@ -60,6 +75,11 @@ Tree.prototype.append = function(path, child) {
 };
 
 Tree.prototype.insertAfter = function(path, child) {
+    if (typeof child == 'undefined') {
+        child = path;
+        path  = null;
+    }
+
     var self = this;
 
     return self._doAtPath(path, 1, 1, 0, function(node, i) {
@@ -93,25 +113,36 @@ Tree.prototype.keys = function(path) {
     });
 };
 
-Tree.prototype.walk = function(cb) {
+Tree.prototype.walk = function(path, cb) {
     var self = this;
+
+    if (typeof path == 'function') {
+        cb   = path;
+        path = null;
+    }
 
     if (typeof cb != 'function') {
         cb = function() { };
     }
 
-    cb([], self);
-    return self._walk(cb, [], 1);
+    if (typeof path == 'undefined' || path === null) {
+        path = [];
+    }
+
+    var startAt = this.get(path);
+
+    cb(path, startAt);
+    return startAt._walk(path, cb, 1);
 };
 
-Tree.prototype._walk = function(cb, path, n) {
+Tree.prototype._walk = function(path, cb, n) {
     var self = this;
 
     for (var i = 0; i < self.children.length; i++) {
         var child     = self.children[i],
             childPath = path.concat(i);
         cb(childPath, child);
-        n += child._walk(cb, childPath, 0) + 1;
+        n += child._walk(childPath, cb, 0) + 1;
     }
 
     return n;
@@ -128,6 +159,14 @@ Tree.prototype._doAtPath = function(path, nSkip, nRelaxMin, nRelaxMax, operation
 
     var treeCurrent = self,
         treeFinal   = treeCurrent;
+
+    if (typeof path == 'undefined' || path === null) {
+        if (nSkip > 0) {
+            throw new Error('Tree path is required for this operation.');
+        } else {
+            path = [];
+        }
+    }
 
     if (!Array.isArray(path)) {
         throw new Error('Tree paths must be arrays.');

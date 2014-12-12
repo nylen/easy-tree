@@ -55,31 +55,34 @@ on the tree:
 ## Methods
 
 Most methods take a `path` argument which is an array of 0-based indices that
-point to a tree node.  Use `[]` to perform the operation on the current node,
-but this is not valid for all operations:  a tree node cannot remove itself, or
-insert a node before or after itself, because it doesn't know its own parent.
+point to a tree node.  Omit the `path` argument or use `[]` to perform the
+operation on the current node, but this is not valid for all operations:  a
+tree node cannot remove itself, or insert a node before or after itself,
+because it doesn't know its own parent.
 
 Many methods take a `child` argument, which can be either a `Tree` instance or
 a plain object which will be converted to a `Tree` instance.
 
-### tree.get(path)
+### tree.get([path])
 
-Returns the subtree at `path` (or the tree itself, if `path` is `[]`).
+Returns the subtree at `path` (or the tree itself, if `path` is `[]` or
+omitted).
 
-### tree.prepend(path, child)
+### tree.prepend([path], child)
 
 Insert `child` as the first child of the node given by `path`.
+
 Returns the new number of children of the modified node.
 
 ### tree.insertBefore(path, child)
 
 Insert `child` before the node given by `path`.
 
-`path` must contain at least 1 element.
+`path` cannot be omitted and must contain at least 1 element.
 
 Returns the new number of children of the modified node.
 
-### tree.append(path, child)
+### tree.append([path], child)
 
 Insert `child` as the last child of the node given by `path`.
 
@@ -89,7 +92,7 @@ Returns the new number of children of the modified node.
 
 Insert `child` after the node given by `path`.
 
-`path` must contain at least 1 element.
+`path` cannot be omitted and must contain at least 1 element.
 
 Returns the new number of children of the modified node.
 
@@ -98,7 +101,7 @@ Returns the new number of children of the modified node.
 Removes the node specified by `path`, and **inserts each of its children where
 the removed node used to be**.
 
-`path` must contain at least 1 element.
+`path` cannot be omitted and must contain at least 1 element.
 
 Returns the removed node (without any children).
 
@@ -106,23 +109,23 @@ Returns the removed node (without any children).
 
 Removes the entire subtree beginning with the node specified by `path`.
 
-`path` must contain at least 1 element.
+`path` cannot be omitted and must contain at least 1 element.
 
 Returns the removed node and all its children.
 
-### tree.keys(path)
+### tree.keys([path])
 
 Returns an array of all data attributes in the node specified by `path` (same
 as `Object.keys()` but excludes the `children` property).
 
-### tree.walk(cb)
+### tree.walk([path], [cb])
 
-For the current node and any child and descendant nodes, calls `cb`
+For the node specified by `path` and any child and descendant nodes, calls `cb`
 **synchronously** with parameters `path, node`.
 
 Returns the total number of nodes visited.
 
-You can omit the `cb` parameter to count the number of nodes in a tree.
+You can omit the `cb` parameter to just count the number of nodes in a tree.
 
 ## Other Notes
 
