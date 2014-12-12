@@ -160,4 +160,24 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
     });
+
+    describe('append', function() {
+        it('appends nodes to the tree root', function() {
+            tree.append([], { z : 26 });
+            assertTreeMatchesFile(
+                'append-root');
+        });
+
+        it('appends nodes to a non-empty subtree', function() {
+            tree.append([1, 0], { z : 26 });
+            assertTreeMatchesFile(
+                'append-non-empty');
+        });
+
+        it('cannot append ndoes to a non-existent subtree', function() {
+            (function() {
+                tree.append([0, -1], { z : 26 });
+            }).must.throw('Bad tree path [ 0, -1 ]: -1 (index 1) is below minimum value of 0.');
+        });
+    });
 });
