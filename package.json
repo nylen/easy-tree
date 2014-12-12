@@ -1,7 +1,7 @@
 {
     "name"        : "easy-tree",
     "author"      : "James Nylen <jnylen@gmail.com>",
-    "description" : "Simple library to manipulate tree structures.",
+    "description" : "Simple library to manipulate tree data structures.",
     "version"     : "0.0.1",
     "repository"  : {
         "type" : "git",
