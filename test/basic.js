@@ -335,4 +335,12 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [ 0, 3, 0 ]: 3 (index 1) is above maximum value of 2.');
         });
     });
+
+    describe('walk', function() {
+        // walk() is already pretty heavily tested (see describeTree() above)
+
+        it('returns the count of all nodes', function() {
+            tree.walk().must.equal(16);
+        });
+    });
 });
