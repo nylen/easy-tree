@@ -110,6 +110,11 @@ Removes the entire subtree beginning with the node specified by `path`.
 
 Returns the removed node and all its children.
 
+### tree.keys(path)
+
+Returns an array of all data attributes in the node specified by `path` (same
+as `Object.keys()` but excludes the `children` property).
+
 ### tree.walk(cb)
 
 For the current node and any child and descendant nodes, calls `cb`
@@ -118,11 +123,6 @@ For the current node and any child and descendant nodes, calls `cb`
 Returns the total number of nodes visited.
 
 You can omit the `cb` parameter to count the number of nodes in a tree.
-
-### tree.keys()
-
-Returns an array of all data attributes in the current tree node (same as
-`Object.keys()` but excludes the `children` property).
 
 ## Other Notes
 

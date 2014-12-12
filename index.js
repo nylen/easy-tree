@@ -85,6 +85,14 @@ Tree.prototype.prune = function(path) {
     });
 };
 
+Tree.prototype.keys = function(path) {
+    return this._doAtPath(path, 0, 0, 0, function(node) {
+        return Object.keys(node).filter(function(k) {
+            return (k != 'children');
+        });
+    });
+};
+
 Tree.prototype.walk = function(cb) {
     var self = this;
 
@@ -107,12 +115,6 @@ Tree.prototype._walk = function(cb, path, n) {
     }
 
     return n;
-};
-
-Tree.prototype.keys = function() {
-    return Object.keys(this).filter(function(k) {
-        return (k != 'children');
-    });
 };
 
 // nSkip     : number of path elements to validate but not include in the path

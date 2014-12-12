@@ -26,7 +26,7 @@ describe('easy-tree', function() {
         var lines = [];
         t.walk(function(path, node) {
             var line = '',
-                keys = node.keys();
+                keys = node.keys([]);
             if (path.length) {
                 line += path.join(',');
             } else {
@@ -34,7 +34,7 @@ describe('easy-tree', function() {
             }
             line += '\t: ';
             if (keys.length) {
-                line += node.keys().map(function(k) {
+                line += node.keys([]).map(function(k) {
                     return k + '=' + node[k];
                 }).join(';');
             } else {
