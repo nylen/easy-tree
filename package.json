@@ -1,0 +1,26 @@
+{
+    "name"        : "easy-tree",
+    "author"      : "James Nylen <jnylen@gmail.com>",
+    "description" : "Simple library to manipulate tree structures.",
+    "version"     : "0.0.1",
+    "repository"  : {
+        "type" : "git",
+        "url"  : "https://github.com/nylen/easy-tree"
+    },
+    "bugs" : {
+        "url" : "https://github.com/nylen/easy-tree/issues"
+    },
+    "license"  : "MIT",
+    "keywords" : [
+        "tree"
+    ],
+    "scripts" : {
+        "test" : "node node_modules/.bin/mocha"
+    },
+    "main"         : "index.js",
+    "dependencies" : {},
+    "devDependencies" : {
+        "mocha" : "~2.0.1",
+        "must"  : "~0.12.0"
+    }
+}
