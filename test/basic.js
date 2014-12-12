@@ -343,4 +343,25 @@ describe('easy-tree', function() {
             tree.walk().must.equal(16);
         });
     });
+
+    describe('keys', function() {
+        it('works on the root node', function() {
+            tree.keys([]).must.eql(['a', 'b']);
+        });
+
+        it('works on a non-empty descendant node', function() {
+            tree.keys([0, 2]).must.eql(['g']);
+        });
+
+        it('works on an empty child node', function() {
+            tree.append([], {});
+            tree.keys([2]).must.eql([]);
+        });
+
+        it('fails if no path given', function() {
+            (function() {
+                tree.keys();
+            }).must.throw('Tree paths must be arrays.');
+        });
+    });
 });
