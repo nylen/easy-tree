@@ -103,6 +103,59 @@ describe('easy-tree', function() {
         });
     });
 
+    describe('get', function() {
+        it('gets the root node', function() {
+            tree.get([]).must.equal(tree);
+        });
+
+        it('gets a subtree', function() {
+            tree.get([1, 2]).must.equal(
+                tree.children[1].children[2]);
+        });
+
+        it('cannot get a non-existent subtree', function() {
+            (function() {
+                tree.get([0, 3]);
+            }).must.throw('Bad tree path [ 0, 3 ]: 3 (index 1) is above maximum value of 2.');
+        });
+
+        it('cannot get a missing path', function() {
+            (function() {
+                tree.get();
+            }).must.throw('Tree paths must be arrays.');
+        });
+
+        it('cannot get a numeric path', function() {
+            (function() {
+                tree.get(1);
+            }).must.throw('Tree paths must be arrays.');
+        });
+
+        it('cannot get a string path', function() {
+            (function() {
+                tree.get('1');
+            }).must.throw('Tree paths must be arrays.');
+        });
+
+        it('cannot get an object path', function() {
+            (function() {
+                tree.get({ '0' : 1 });
+            }).must.throw('Tree paths must be arrays.');
+        });
+
+        it('cannot get a non-numeric path component', function() {
+            (function() {
+                tree.get(['asdf']);
+            }).must.throw('Bad tree path [ asdf ]: asdf (index 0) is not a number.');
+        });
+
+        it('cannot get a floating-point path component', function() {
+            (function() {
+                tree.get([1, 1.1, 0]);
+            }).must.throw('Bad tree path [ 1, 1.1, 0 ]: 1.1 (index 1) is not an integer.');
+        });
+    });
+
     describe('prepend', function() {
         it('prepends nodes to the tree root', function() {
             tree.prepend([], { z : 26 });

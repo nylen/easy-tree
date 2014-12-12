@@ -62,6 +62,10 @@ insert a node before or after itself, because it doesn't know its own parent.
 Many methods take a `child` argument, which can be either a `Tree` instance or
 a plain object which will be converted to a `Tree` instance.
 
+### tree.get(path)
+
+Returns the subtree at `path` (or the tree itself, if `path` is `[]`).
+
 ### tree.prepend(path, child)
 
 Insert `child` as the first child of the node given by `path`.

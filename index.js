@@ -26,6 +26,12 @@ function Tree(obj) {
     }
 };
 
+Tree.prototype.get = function(path) {
+    return this._doAtPath(path, 0, 0, 0, function(node) {
+        return node;
+    });
+};
+
 Tree.prototype.prepend = function(path, child) {
     var self = this;
 
