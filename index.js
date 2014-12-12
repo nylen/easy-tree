@@ -62,7 +62,7 @@ Tree.prototype.append = function(path, child) {
 Tree.prototype.insertAfter = function(path, child) {
     var self = this;
 
-    return self._doAtPath(path, 1, 1, 0, function(node) {
+    return self._doAtPath(path, 1, 1, 0, function(node, i) {
         node.children.splice(i + 1, 0, self._makeTree(child));
     });
 };

@@ -180,7 +180,7 @@ describe('easy-tree', function() {
         it('inserts nodes as the first child of a subtree', function() {
             tree.insertBefore([1, 0, 0], { z : 26 });
             assertTreeMatchesFile(
-                'insertBefore-subtree-begin');
+                'insert-subtree-begin');
         });
 
         it('cannot insert nodes before child -1 of a subtree', function() {
@@ -192,13 +192,13 @@ describe('easy-tree', function() {
         it('inserts nodes in the middle of a subtree', function() {
             tree.insertBefore([0, 2], { z : 26 });
             assertTreeMatchesFile(
-                'insertBefore-subtree-middle');
+                'insert-subtree-middle');
         });
 
         it('inserts nodes as the last child of the root', function() {
             tree.insertBefore([2], { z : 26 });
             assertTreeMatchesFile(
-                'insertBefore-root-end');
+                'insert-root-end');
         });
 
         it('cannot insert nodes before the last+1 child of the root', function() {
@@ -231,6 +231,44 @@ describe('easy-tree', function() {
             (function() {
                 tree.append([0, -1], { z : 26 });
             }).must.throw('Bad tree path [ 0, -1 ]: -1 (index 1) is below minimum value of 0.');
+        });
+    });
+
+    describe('insertAfter', function() {
+        it('inserts nodes as the first child of a subtree', function() {
+            tree.insertAfter([1, 0, -1], { z : 26 });
+            assertTreeMatchesFile(
+                'insert-subtree-begin');
+        });
+
+        it('cannot insert nodes after child -2 of a subtree', function() {
+            (function() {
+                tree.insertAfter([1, 0, -2], { z : 26 });
+            }).must.throw('Bad tree path [ 1, 0, -2 ]: -2 (index 2) is below minimum value of -1.');
+        });
+
+        it('inserts nodes in the middle of a subtree', function() {
+            tree.insertAfter([0, 1], { z : 26 });
+            assertTreeMatchesFile(
+                'insert-subtree-middle');
+        });
+
+        it('inserts nodes as the last child of the root', function() {
+            tree.insertAfter([1], { z : 26 });
+            assertTreeMatchesFile(
+                'insert-root-end');
+        });
+
+        it('cannot insert nodes after the last child of the root', function() {
+            (function() {
+                tree.insertAfter([2], { z : 26 });
+            }).must.throw('Bad tree path [ 2 ]: 2 (index 0) is above maximum value of 1.');
+        });
+
+        it('cannot insert nodes before the tree root', function() {
+            (function() {
+                tree.insertAfter([], { z : 26 });
+            }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
     });
 });
