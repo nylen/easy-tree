@@ -103,7 +103,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('get', function() {
+    describe('get method', function() {
         it('gets the root node', function() {
             tree.get([]).must.equal(tree);
         });
@@ -156,7 +156,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('prepend', function() {
+    describe('prepend method', function() {
         it('prepends nodes to the tree root', function() {
             tree.prepend([], { z : 26 });
             assertTreeMatchesFile(
@@ -176,7 +176,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('insertBefore', function() {
+    describe('insertBefore method', function() {
         it('inserts nodes as the first child of a subtree', function() {
             tree.insertBefore([1, 0, 0], { z : 26 });
             assertTreeMatchesFile(
@@ -214,7 +214,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('append', function() {
+    describe('append method', function() {
         it('appends nodes to the tree root', function() {
             tree.append([], { z : 26 });
             assertTreeMatchesFile(
@@ -234,7 +234,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('insertAfter', function() {
+    describe('insertAfter method', function() {
         it('inserts nodes as the first child of a subtree', function() {
             tree.insertAfter([1, 0, -1], { z : 26 });
             assertTreeMatchesFile(
@@ -272,7 +272,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('remove', function() {
+    describe('remove method', function() {
         it('removes nodes at the beginning of a tree', function() {
             tree.remove([0]);
             assertTreeMatchesFile(
@@ -304,7 +304,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('prune', function() {
+    describe('prune method', function() {
         it('prunes nodes at the beginning of a tree', function() {
             tree.prune([0]);
             assertTreeMatchesFile(
@@ -336,7 +336,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('walk', function() {
+    describe('walk method', function() {
         // walk() is already pretty heavily tested (see describeTree() above)
 
         it('returns the count of all nodes', function() {
@@ -344,7 +344,7 @@ describe('easy-tree', function() {
         });
     });
 
-    describe('keys', function() {
+    describe('keys method', function() {
         it('works on the root node', function() {
             tree.keys([]).must.eql(['a', 'b']);
         });
