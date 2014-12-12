@@ -71,7 +71,7 @@ Tree.prototype.remove = function(path) {
     return this._doAtPath(path, 1, 0, 0, function(node, i) {
         var toRemove = node.children[i];
         node.children.splice.apply(
-            node, [i, 1].concat(toRemove.children));
+            node.children, [i, 1].concat(toRemove.children));
         toRemove.children = [];
         return toRemove;
     });

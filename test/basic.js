@@ -271,4 +271,36 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
         });
     });
+
+    describe('remove', function() {
+        it('removes nodes at the beginning of a tree', function() {
+            tree.remove([0]);
+            assertTreeMatchesFile(
+                'remove-0');
+        });
+
+        it('removes nodes in the middle of a subtree', function() {
+            tree.remove([1, 1]);
+            assertTreeMatchesFile(
+                'remove-1-1');
+        });
+
+        it('removes nodes at the end of a subtree', function() {
+            tree.remove([1, 2, 2]);
+            assertTreeMatchesFile(
+                'remove-1-2-2');
+        });
+
+        it('cannot remove the root node', function() {
+            (function() {
+                tree.remove([]);
+            }).must.throw('Bad tree path [  ]: minimum length 1 not met.');
+        });
+
+        it('cannot remove a non-existent subtree', function() {
+            (function() {
+                tree.remove([0, 3, 0]);
+            }).must.throw('Bad tree path [ 0, 3, 0 ]: 3 (index 1) is above maximum value of 2.');
+        });
+    });
 });
