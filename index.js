@@ -179,21 +179,25 @@ Tree.prototype._doAtPath = function(path, nSkip, nRelaxMin, nRelaxMax, operation
     for (var i = 0; i < path.length; i++) {
         var p = path[i];
         if (typeof p != 'number') {
-            self._throwPathError(path, i, 'not a number');
+            self._throwPathError(path, i, 'is not a number');
         }
         if (p % 1) {
-            self._throwPathError(path, i, 'not an integer');
+            self._throwPathError(path, i, 'is not an integer');
         }
-        var min = 0 - nRelaxMin,
-            max = treeCurrent.children.length - 1 + nRelaxMax;
+        var skip = (i >= path.length - nSkip),
+            min  = 0 - (skip ? nRelaxMin : 0),
+            max  = treeCurrent.children.length - 1 + (skip ? nRelaxMax : 0);
+        if (max < min) {
+            self._throwPathError(path, i, 'refers to a non-existent element');
+        }
         if (p < min) {
-            self._throwPathError(path, i, 'below minimum value of ' + min);
+            self._throwPathError(path, i, 'is below minimum value of ' + min);
         }
         if (p > max) {
-            self._throwPathError(path, i, 'above maximum value of ' + max);
+            self._throwPathError(path, i, 'is above maximum value of ' + max);
         }
         treeCurrent = treeCurrent.children[p];
-        if (i < path.length - nSkip) {
+        if (!skip) {
             treeFinal = treeCurrent;
         }
     }
@@ -209,13 +213,13 @@ Tree.prototype._throwPathError = function(path, i, problem) {
 
     var msg = 'Bad tree path [ ' + path.map(function(p) {
         return p.toString();
-    }).join(', ') + ' ]:';
+    }).join(', ') + ' ]: ';
 
     if (typeof i == 'number') {
-        msg += ' ' + path[i] + ' (index ' + i + ') is';
+        msg += path[i] + ' (index ' + i + ') ';
     }
 
-    throw new Error(msg + ' ' + problem + '.');
+    throw new Error(msg + problem + '.');
 };
 
 Tree.prototype._makeTree = function(obj) {

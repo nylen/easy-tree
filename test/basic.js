@@ -197,6 +197,18 @@ describe('easy-tree', function() {
             }).must.throw('Bad tree path [ 1, 0, -1 ]: -1 (index 2) is below minimum value of 0.');
         });
 
+        it('cannot insert nodes before a non-existent subtree 1', function() {
+            (function() {
+                tree.insertBefore([0, 1, 0, 0], { z : 26 });
+            }).must.throw('Bad tree path [ 0, 1, 0, 0 ]: 0 (index 2) refers to a non-existent element.');
+        });
+
+        it('cannot insert nodes before a non-existent subtree 2', function() {
+            (function() {
+                tree.insertBefore([1, 3, 0], { z : 26 });
+            }).must.throw('Bad tree path [ 1, 3, 0 ]: 3 (index 1) is above maximum value of 2.');
+        });
+
         it('inserts nodes in the middle of a subtree', function() {
             tree.insertBefore([0, 2], { z : 26 }).must.equal(4);
             assertTreeMatchesFile(
@@ -265,6 +277,18 @@ describe('easy-tree', function() {
             (function() {
                 tree.insertAfter([1, 0, -2], { z : 26 });
             }).must.throw('Bad tree path [ 1, 0, -2 ]: -2 (index 2) is below minimum value of -1.');
+        });
+
+        it('cannot insert nodes after a non-existent subtree 1', function() {
+            (function() {
+                tree.insertAfter([0, 1, -1, 0], { z : 26 });
+            }).must.throw('Bad tree path [ 0, 1, -1, 0 ]: -1 (index 2) refers to a non-existent element.');
+        });
+
+        it('cannot insert nodes after a non-existent subtree 2', function() {
+            (function() {
+                tree.insertAfter([1, -1, 0], { z : 26 });
+            }).must.throw('Bad tree path [ 1, -1, 0 ]: -1 (index 1) is below minimum value of 0.');
         });
 
         it('inserts nodes in the middle of a subtree', function() {
