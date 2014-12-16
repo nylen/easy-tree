@@ -132,8 +132,11 @@ Tree.prototype.walk = function(path, cb) {
 
     var startAt = this.get(path);
 
-    cb(path, startAt);
-    return startAt._walk(path, cb, 1);
+    if (cb(path, startAt) === false) {
+        return 1;
+    } else {
+        return startAt._walk(path, cb, 1);
+    }
 };
 
 Tree.prototype._walk = function(path, cb, n) {
@@ -142,8 +145,10 @@ Tree.prototype._walk = function(path, cb, n) {
     for (var i = 0; i < self.children.length; i++) {
         var child     = self.children[i],
             childPath = path.concat(i);
-        cb(childPath, child);
-        n += child._walk(childPath, cb, 0) + 1;
+        n++;
+        if (cb(childPath, child) !== false) {
+            n += child._walk(childPath, cb, 0);
+        }
     }
 
     return n;

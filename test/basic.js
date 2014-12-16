@@ -408,9 +408,8 @@ describe('easy-tree', function() {
     });
 
     describe('walk method', function() {
-        // walk() itself is already pretty well-tested (see describeTree()
-        // above) so just test the item count and the permutations of arguments
-        // here.
+        // Basic usage of walk() is already pretty well-tested (see
+        // describeTree() above).
 
         it('returns the count of all nodes', function() {
             tree.walk([]).must.equal(16);
@@ -441,6 +440,40 @@ describe('easy-tree', function() {
                 '1,1',
                 '1,1,0',
                 '1,1,1',
+                '1,2',
+                '1,2,0',
+                '1,2,1',
+                '1,2,2'
+            ]);
+        });
+
+        it('does nothing if the first callback returns false', function() {
+            var n = 0;
+            tree.walk(function(path, node) {
+                n++;
+                path.must.eql([]);
+                return false;
+            }).must.equal(1);
+            n.must.equal(1);
+        });
+
+        it('stops walking subtrees if the callback returns false', function() {
+            var paths = [];
+            tree.walk(function(path, node) {
+                var pathStr = path.join(',');
+                paths.push(pathStr);
+                if (pathStr === '0' || pathStr === '1,1' || pathStr === '1,2,1') {
+                    return false;
+                }
+            }).must.equal(11);
+            paths.must.eql([
+                '',
+                '0',
+                '1',
+                '1,0',
+                '1,0,0',
+                '1,0,1',
+                '1,1',
                 '1,2',
                 '1,2,0',
                 '1,2,1',

@@ -126,6 +126,10 @@ Returns the total number of nodes visited.
 
 You can omit the `cb` parameter to just count the number of nodes in a tree.
 
+If `cb` returns `false` for a given node, the `walk` function will not descend
+to that node's children and they will not be included in the count of nodes
+visited.
+
 ## Other Notes
 
 `Tree` objects also contain the following private methods, so you cannot use
