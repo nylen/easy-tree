@@ -429,13 +429,10 @@ describe('easy-tree', function() {
         });
 
         it('walks subtrees', function() {
-            var n     = 0,
-                paths = [];
+            var paths = [];
             tree.walk([1], function(path, node) {
-                n++;
                 paths.push(path.join(','));
             }).must.equal(11);
-            n.must.equal(11);
             paths.must.eql([
                 '1',
                 '1,0',
